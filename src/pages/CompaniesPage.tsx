@@ -98,14 +98,11 @@ const CompaniesPage: React.FC = () => {
   <div className="absolute top-20 right-20 w-24 h-24 bg-blue-300 bg-opacity-20 rounded-full blur-2xl"></div>
         <div className="absolute bottom-10 left-1/4 w-20 h-20 bg-blue-300 bg-opacity-15 rounded-full blur-xl"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="text-center mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
               Explore Amazing Companies
             </h1>
-            <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-6">
-              Discover top employers, learn about company cultures, and find your next career opportunity with leading organizations across Ethiopia
-            </p>
           </div>
 
           {/* Quick Stats */}
@@ -221,11 +218,24 @@ const CompaniesPage: React.FC = () => {
             >
               {/* Company Header */}
               <div className="flex items-start space-x-4 mb-4">
-                <img
-                  src={company.logo}
-                  alt={company.name}
-                  className="w-16 h-16 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
-                />
+                {company.logo ? (
+                  <img
+                    src={company.logo}
+                    alt={company.name}
+                    className="w-16 h-16 rounded-lg object-cover flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                ) : null}
+                <div 
+                  className="w-16 h-16 rounded-lg flex-shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl font-bold group-hover:scale-105 transition-transform duration-200"
+                  style={{ display: company.logo ? 'none' : 'flex' }}
+                >
+                  {company.name.charAt(0).toUpperCase()}
+                </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-1 truncate">
                     {company.name}

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { User, Briefcase } from 'lucide-react';
 import EmployerSignup from './EmployerSignupPage';
 import JobseekerSignup from './JobseekerSignupPage';
+import logo from '../assets/logo.png';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -21,61 +22,111 @@ export default function SignupPage() {
   } else {
     // Selector UI
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl w-full">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Create your account</h2>
-            <p className="text-gray-600">Choose the option that best describes you</p>
+      <div className="min-h-screen bg-gradient-to-br from-[#e6f2f8] via-white to-[#e6f2f8] flex items-center justify-center">
+        <div className="max-w-4xl w-full px-4 py-12">
+          <div className="text-center mb-12">
+            <div className="inline-block bg-[#2b78ac] rounded-xl p-2 shadow-sm mb-6">
+              <img src={logo} alt="Hulumoya Jobs" className="h-12 w-auto" />
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">Join Hulumoya</h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Choose how you want to use our platform
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Link
-              to="/signup?type=jobseeker"
-              className="group bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow border border-transparent hover:border-blue-200"
-            >
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="bg-blue-600 p-3 rounded-lg text-white">
-                  <User className="w-6 h-6" />
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Job Seeker Signup Card */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-transform hover:scale-[1.02] border border-gray-100">
+              <div className="bg-gradient-to-r from-[#2b78ac] to-[#2b78ac] p-6">
+                <div className="w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center mb-4">
+                  <User className="h-8 w-8 text-[#2b78ac]" />
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900">I’m a Job Seeker</h3>
-                  <p className="text-gray-600 text-sm">Find jobs, apply, and track your applications</p>
-                </div>
+                <h2 className="text-2xl font-bold text-white">Sign up as a Job Seeker</h2>
+                <p className="mt-2 text-[#e6f2f8]">Find your dream job and advance your career</p>
               </div>
-              <ul className="text-sm text-gray-700 list-disc pl-5 space-y-1">
-                <li>Create a professional profile</li>
-                <li>Save and apply to jobs</li>
-                <li>Get insights and recommendations</li>
-              </ul>
-              <div className="mt-4 text-blue-600 font-medium">Continue as Job Seeker →</div>
-            </Link>
+              <div className="p-6">
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Browse thousands of job opportunities</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Apply to jobs with one click</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Track your applications in one place</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Get job alerts matching your profile</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Build your professional profile</p>
+                  </li>
+                </ul>
+                <Link
+                  to="/signup?type=jobseeker"
+                  className="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#2b78ac] to-[#2b78ac] hover:from-[#276d9d] hover:to-[#276d9d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2b78ac]"
+                >
+                  Continue as Job Seeker
+                  <Briefcase className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
+            </div>
 
-            <Link
-              to="/signup?type=employer"
-              className="group bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow border border-transparent hover:border-blue-200"
-            >
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="bg-green-600 p-3 rounded-lg text-white">
-                  <Briefcase className="w-6 h-6" />
+            {/* Employer Signup Card */}
+            <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-transform hover:scale-[1.02] border border-gray-100">
+              <div className="bg-gradient-to-r from-[#2b78ac] to-[#2b78ac] p-6">
+                <div className="w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center mb-4">
+                  <Briefcase className="h-8 w-8 text-[#2b78ac]" />
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900">I’m an Employer</h3>
-                  <p className="text-gray-600 text-sm">Post jobs and manage candidates</p>
-                </div>
+                <h2 className="text-2xl font-bold text-white">Sign up as an Employer</h2>
+                <p className="mt-2 text-[#e6f2f8]">Find the perfect candidates for your company</p>
               </div>
-              <ul className="text-sm text-gray-700 list-disc pl-5 space-y-1">
-                <li>Post and manage job listings</li>
-                <li>Browse and shortlist candidates</li>
-                <li>Hire faster with tools</li>
-              </ul>
-              <div className="mt-4 text-green-600 font-medium">Continue as Employer →</div>
-            </Link>
+              <div className="p-6">
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Post unlimited job listings</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Access to qualified candidates</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Manage applications efficiently</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Build your company profile</p>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="flex-shrink-0 h-5 w-5 text-[#2b78ac]">✓</div>
+                    <p className="ml-3 text-gray-700">Advanced candidate filtering</p>
+                  </li>
+                </ul>
+                <Link
+                  to="/signup?type=employer"
+                  className="w-full flex items-center justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#2b78ac] to-[#2b78ac] hover:from-[#276d9d] hover:to-[#276d9d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2b78ac]"
+                >
+                  Continue as Employer
+                  <Briefcase className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
+            </div>
           </div>
 
           <div className="text-center mt-8">
-            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">
-              Already have an account? Sign in
-            </Link>
+            <p className="text-gray-600">
+              Already have an account?{" "}
+              <Link to="/login" className="font-medium text-[#2b78ac] hover:text-[#276d9d] transition-colors">
+                Sign in
+              </Link>
+            </p>
           </div>
         </div>
       </div>

@@ -9,6 +9,7 @@ const ContactPage: React.FC = () => {
     message: '',
     inquiryType: 'general'
   });
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -130,14 +131,11 @@ const ContactPage: React.FC = () => {
   <div className="absolute top-40 right-20 w-32 h-32 bg-blue-300 bg-opacity-20 rounded-full blur-2xl"></div>
         <div className="absolute bottom-20 left-1/4 w-24 h-24 bg-blue-300 bg-opacity-15 rounded-full blur-xl"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-20">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Get in Touch
             </h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
-              Have questions or need assistance? We're here to help you succeed in your career journey or hiring process.
-            </p>
           </div>
         </div>
         

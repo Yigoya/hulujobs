@@ -6,7 +6,6 @@ import JobCard from '../components/JobCard';
 import Pagination from '../components/Pagination';
 import { useJobs } from '../hooks/jobs/useJobs';
 import { Job, Sort, Pageable } from '../types/type';
-import { useAuth } from '../contexts/AuthContext';
 
 type JobsResponse = {
   content: Job[];
@@ -25,7 +24,6 @@ type JobsResponse = {
 const JobsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [sortBy, setSortBy] = useState('relevance');
   const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') || '1', 10));
   const [searchKeyword, setSearchKeyword] = useState(searchParams.get('keyword') || '');
   const [searchLocation, setSearchLocation] = useState(searchParams.get('location') || '');
@@ -216,27 +214,7 @@ const JobsPage: React.FC = () => {
       })
     : jobs;
 
-  // Sort jobs based on sortBy
-  let sortedJobs = [...filteredJobs];
-  if (sortBy === 'newest') {
-    sortedJobs.sort((a, b) => new Date(b.postedDate).getTime() - new Date(a.postedDate).getTime());
-  } else if (sortBy === 'oldest') {
-    sortedJobs.sort((a, b) => new Date(a.postedDate).getTime() - new Date(b.postedDate).getTime());
-  } else if (sortBy === 'salary-high') {
-    sortedJobs.sort((a, b) => {
-      const avgA = (a.salaryMin + a.salaryMax) / 2;
-      const avgB = (b.salaryMin + b.salaryMax) / 2;
-      return avgB - avgA;
-    });
-  } else if (sortBy === 'salary-low') {
-    sortedJobs.sort((a, b) => {
-      const avgA = (a.salaryMin + a.salaryMax) / 2;
-      const avgB = (b.salaryMin + b.salaryMax) / 2;
-      return avgA - avgB;
-    });
-  }
-
-  const currentJobs = sortedJobs.slice(startIndex, startIndex + jobsPerPage);
+  const currentJobs = filteredJobs.slice(startIndex, startIndex + jobsPerPage);
 
   // Handler for filter changes
   const handleFilterChange = (newFilters: Record<string, string>) => {
@@ -300,14 +278,11 @@ const JobsPage: React.FC = () => {
   <div className="absolute top-20 right-20 w-24 h-24 bg-blue-300 bg-opacity-20 rounded-full blur-2xl"></div>
   <div className="absolute bottom-10 left-1/4 w-20 h-20 bg-blue-300 bg-opacity-15 rounded-full blur-xl"></div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="text-center mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
               Find Your Dream Job
             </h1>
-            <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-6">
-              Discover thousands of job opportunities from top employers across Ethiopia and beyond
-            </p>
           </div>
 
           {/* Search Header */}
@@ -376,32 +351,18 @@ const JobsPage: React.FC = () => {
           {/* Job Listings */}
           <div className="lg:w-3/4">
             {/* Results Header */}
-            <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
+            <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Job Search Results</h2>
+                <div className="flex items-center gap-4">
+                  <h2 className="text-xl font-bold text-gray-900">Job Search Results</h2>
                   {categoryFromUrl && (
-                    <p className="text-blue-600 font-medium mb-2">
+                    <p className="text-blue-600 font-medium">
                       Filtered by: {categoryFromUrl}
                     </p>
                   )}
                   <p className="text-gray-600">
                     Showing {startIndex + 1}-{Math.min(startIndex + jobsPerPage, filteredJobs.length)} of {filteredJobs.length} jobs
                   </p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">Sort by:</span>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="relevance">Relevance</option>
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="salary-high">Salary: High to Low</option>
-                    <option value="salary-low">Salary: Low to High</option>
-                  </select>
                 </div>
               </div>
             </div>

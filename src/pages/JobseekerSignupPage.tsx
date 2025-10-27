@@ -4,6 +4,7 @@ import { Eye, EyeOff, Mail, Lock, Briefcase, AlertCircle } from 'lucide-react';
 import { post } from '../services/api-client';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import CountryCodeSelect from '../components/CountryCodeSelect';
+import logo from '../assets/logo.png';
 
 interface SignupResponse {
   token?: string;
@@ -187,7 +188,9 @@ const JobseekerSignupPage: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          
+          <div className="inline-block bg-[#2b78ac] rounded-xl p-2 shadow-sm mb-6">
+            <img src={logo} alt="Hulumoya Jobs" className="h-12 w-auto" />
+          </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">{getPageTitle()}</h2>
           <p className="text-gray-600">{getPageSubtitle()}</p>
         </div>

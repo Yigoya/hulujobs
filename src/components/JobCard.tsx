@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, DollarSign, ExternalLink, Eye, ChevronDown, ChevronUp, Bookmark, BookmarkCheck, AlertCircle, X } from 'lucide-react';
+import { MapPin, DollarSign, Bookmark, BookmarkCheck, AlertCircle, X } from 'lucide-react';
 import JobApplicationModal from './modals/JobApplicationModal';
 import { formatTimeAgo } from '../utils/formatTimeAgo';
 import { useSaveJob } from '../hooks/useSaveJob';
@@ -85,27 +85,16 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
     }
   };
 
-    const { data: savedJobs, isLoading: isLoadingSavedJobs } = useUserSavedJobs(user?.id || '') as {data: userSavedJobsResponse, isLoading: boolean};
+  // Only fetch saved jobs if user is logged in
+  const { data: savedJobs, isLoading: isLoadingSavedJobs } = useUserSavedJobs(user?.id || '', { enabled: !!user }) as {data: userSavedJobsResponse, isLoading: boolean};
   
   // Update isSaved state based on savedJobs data
   useEffect(() => {
-    if (!isLoadingSavedJobs && savedJobs?.content) {
+    if (user && !isLoadingSavedJobs && savedJobs?.content) {
       const savedJobIds = savedJobs.content.map(savedJob => savedJob.id);
       setIsSaved(savedJobIds.includes(job.id));
     }
-  }, [savedJobs, job.id, isLoadingSavedJobs]);
-
-  const truncateDescription = (text: string, maxLines: number = 3) => {
-    const words = text.split(' ');
-    const wordsPerLine = 15; // Approximate words per line
-    const maxWords = maxLines * wordsPerLine;
-    
-    if (words.length <= maxWords) {
-      return text;
-    }
-    
-    return words.slice(0, maxWords).join(' ') + '...';
-  };
+  }, [savedJobs, job.id, isLoadingSavedJobs, user]);
 
   const getTypeColor = (type: string) => {
     switch (type.toLowerCase()) {
@@ -140,137 +129,126 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-gray-100 hover:border-blue-200">
-      {/* Error Message */}
-      {error && (
-        <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-3 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
-            <span className="text-red-700 text-sm">{error}</span>
-          </div>
-          <button
-            onClick={() => setError(null)}
-            className="text-red-600 hover:text-red-800 transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      )}
-      
-      <div className="relative">
-        {/* Company Logo and Save Button - Top Right */}
-        <div className="absolute top-0 right-0 flex items-center space-x-2">
-          <button
-            onClick={handleSaveJob}
-            disabled={isLoading}
-            className={`p-2 rounded-lg transition-all duration-200 ${
-              isSaved 
-                ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            title={
-              isLoading 
-                ? 'Processing...' 
-                : isSaved 
-                  ? 'Remove from saved jobs' 
-                  : 'Save this job'
-            }
-          >
-            {isLoading ? (
-              <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
-            ) : isSaved ? (
-              <BookmarkCheck className="w-5 h-5" />
-            ) : (
-              <Bookmark className="w-5 h-5" />
-            )}
-          </button>
-          <Link to={`/company/${encodeURIComponent(job.companyName)}`}>
-            <img
-              src={job.companyLogo}
-              alt={job.companyName}
-              className="w-12 h-12 rounded-lg object-cover hover:opacity-80 transition-opacity"
-            />
-          </Link>
-        </div>
-
-        {/* Job Content */}
-        <div className="pr-20">
-          {/* Job Title and Company */}
-          <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600 transition-colors cursor-pointer">
-            {job.title}
-          </h3>
-          <Link 
-            to={`/company/${encodeURIComponent(job.companyName)}`}
-            className="text-gray-600 font-medium mb-3 block hover:text-blue-600 transition-colors"
-          >
-            {job.companyName}
-          </Link>
-
-          {/* Job Meta Information */}
-          <div className="flex flex-wrap items-center gap-4 mb-4">
-            <div className="flex items-center space-x-1 text-gray-600">
-              <MapPin className="w-4 h-4 text-blue-600" />
-              <span className="text-sm">{job.jobLocation}</span>
+    <Link to={`/job/${job.id}`} className="block">
+      <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-4 border border-gray-100 hover:border-blue-200 cursor-pointer">
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-3 flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+              <span className="text-red-700 text-sm">{error}</span>
             </div>
-            <div className="flex items-center space-x-1 text-gray-600">
-              <Clock className="w-4 h-4 text-green-600" />
-              <span className="text-sm">{formatTimeAgo(job.postedDate)}</span>
-            </div>
-            <div className="flex items-center space-x-1 text-gray-600">
-              <DollarSign className="w-4 h-4 text-orange-600" />
-              <span className="text-sm">{job.salaryMin} - {job.salaryMax} {job.salaryCurrency}</span>
-            </div>
-          </div>
-
-          {/* Badges */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className={`text-xs px-3 py-1 rounded-full font-medium ${getTypeColor(job.jobType)}`}>
-              {job.jobType}
-            </span>
-            <span className={`text-xs px-3 py-1 rounded-full font-medium ${job.level ? getLevelColor(job.level) : getLevelColor('level')}`}>
-              {job.level ? job.level : 'level'}
-            </span>
-            <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
-              {formatTimeAgo(job.postedDate)}
-            </span>
-          </div>
-
-          {/* Job Description */}
-          <div className="mb-6">
-            <p className="text-gray-700 leading-relaxed">
-              {showFullDescription ? job.description : truncateDescription(job.description)}
-            </p>
-            {job.description.split(' ').length > 45 && (
-              <button
-                onClick={() => setShowFullDescription(!showFullDescription)}
-                className="text-blue-600 hover:text-blue-700 text-sm font-medium mt-2 flex items-center space-x-1"
-              >
-                <span>{showFullDescription ? 'See less' : 'See more'}</span>
-                {showFullDescription ? (
-                  <ChevronUp className="w-4 h-4" />
-                ) : (
-                  <ChevronDown className="w-4 h-4" />
-                )}
-              </button>
-            )}
-          </div>
-
-          {/* Action Buttons - Bottom Left */}
-          <div className="flex items-center space-x-3">
-            <button 
-              onClick={() => setShowApplicationModal(true)}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 font-medium"
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setError(null);
+              }}
+              className="text-red-600 hover:text-red-800 transition-colors"
             >
-              <span>Apply Now</span>
-              <ExternalLink className="w-4 h-4" />
+              <X className="w-4 h-4" />
             </button>
-            <Link
-              to={`/job/${job.id}`}
-              className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2 font-medium"
+          </div>
+        )}
+        
+        <div className="flex gap-4">
+          {/* Company Logo - Left Side */}
+          <div className="flex-shrink-0">
+            {job.companyLogo ? (
+              <img
+                src={job.companyLogo}
+                alt={job.companyName}
+                className="w-16 h-16 rounded-lg object-cover"
+                onError={(e) => {
+                  e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" fill="%23e5e7eb"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="%239ca3af"%3E' + job.companyName.charAt(0).toUpperCase() + '%3C/text%3E%3C/svg%3E';
+                }}
+              />
+            ) : (
+              <div className="w-16 h-16 rounded-lg bg-gray-200 flex items-center justify-center">
+                <span className="text-2xl font-bold text-gray-500">{job.companyName.charAt(0).toUpperCase()}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Job Content */}
+          <div className="flex-1 min-w-0">
+            {/* Job Title and Company */}
+            <h3 className="text-lg font-bold text-gray-900 mb-1 hover:text-blue-600 transition-colors truncate">
+              {job.title}
+            </h3>
+            <p className="text-gray-600 font-medium mb-2 truncate">
+              {job.companyName}
+            </p>
+
+            {/* Job Meta Information - Single Line */}
+            <div className="flex flex-wrap items-center gap-3 mb-2 text-sm">
+              <div className="flex items-center space-x-1 text-gray-600">
+                <MapPin className="w-3 h-3 text-blue-600 flex-shrink-0" />
+                <span className="truncate">{job.jobLocation}</span>
+              </div>
+              <div className="flex items-center space-x-1 text-gray-600">
+                <DollarSign className="w-3 h-3 text-orange-600 flex-shrink-0" />
+                <span className="whitespace-nowrap">{job.salaryMin} - {job.salaryMax} {job.salaryCurrency}</span>
+              </div>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getTypeColor(job.jobType)}`}>
+                {job.jobType}
+              </span>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${job.level ? getLevelColor(job.level) : getLevelColor('level')}`}>
+                {job.level ? job.level : 'level'}
+              </span>
+              <span className="text-xs text-gray-500">
+                {formatTimeAgo(job.postedDate)}
+              </span>
+            </div>
+
+            {/* Job Description - 2 Lines */}
+            <div className="mb-3">
+              <p className={`text-gray-700 text-sm ${!showFullDescription ? 'line-clamp-2' : ''}`}>
+                {job.description}
+              </p>
+              {job.description.split(' ').length > 30 && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowFullDescription(!showFullDescription);
+                  }}
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium mt-1"
+                >
+                  {showFullDescription ? 'Show less' : 'Read more'}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Save Button - Right Side */}
+          <div className="flex-shrink-0">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleSaveJob();
+              }}
+              disabled={isLoading}
+              className={`p-2 rounded-lg transition-all duration-200 ${
+                isSaved 
+                  ? 'bg-blue-100 text-blue-600 hover:bg-blue-200' 
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+              title={
+                isLoading 
+                  ? 'Processing...' 
+                  : isSaved 
+                    ? 'Remove from saved jobs' 
+                    : 'Save this job'
+              }
             >
-              <Eye className="w-4 h-4" />
-              <span>View Job</span>
-            </Link>
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              ) : isSaved ? (
+                <BookmarkCheck className="w-5 h-5" />
+              ) : (
+                <Bookmark className="w-5 h-5" />
+              )}
+            </button>
           </div>
         </div>
       </div>
@@ -281,7 +259,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
         isOpen={showApplicationModal}
         onClose={() => setShowApplicationModal(false)}
       />
-    </div>
+    </Link>
   );
 };
 

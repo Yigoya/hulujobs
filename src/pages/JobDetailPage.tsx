@@ -5,14 +5,10 @@ import {
   Clock, 
   DollarSign, 
   ExternalLink, 
-  ArrowLeft, 
-  Building, 
-  Users, 
-  Globe,
+  ArrowLeft,
   Mail,
   Phone,
   Calendar,
-  Briefcase,
   CheckCircle
 } from 'lucide-react';
 import RelatedJobs from '../components/RelatedJobs';
@@ -158,11 +154,21 @@ const JobDetailPage: React.FC = () => {
             {/* Job Header */}
             <div className="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
               <div className="flex flex-col md:flex-row md:items-start gap-6">
-                <img
-                  src={job.companyLogo}
-                  alt={job.companyName}
-                  className="w-20 h-20 rounded-xl object-cover flex-shrink-0"
-                />
+                {job.companyLogo ? (
+                  <img
+                    src={job.companyLogo}
+                    alt={job.companyName}
+                    className="w-20 h-20 rounded-xl object-cover flex-shrink-0"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                ) : null}
+                <div className={`w-20 h-20 rounded-xl bg-gray-200 flex items-center justify-center flex-shrink-0 ${job.companyLogo ? 'hidden' : ''}`}>
+                  <span className="text-3xl font-bold text-gray-500">{job.companyName.charAt(0).toUpperCase()}</span>
+                </div>
                 
                 <div className="flex-1">
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
@@ -239,7 +245,7 @@ const JobDetailPage: React.FC = () => {
               <ul className="space-y-3">
                 {job.responsibilities.map((responsibility, index) => (
                   <li key={index} className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">{responsibility}</span>
                   </li>
                 ))}
@@ -265,7 +271,7 @@ const JobDetailPage: React.FC = () => {
               <ul className="space-y-3">
                 {job.benefits.map((benefit, index) => (
                   <li key={index} className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">{benefit}</span>
                   </li>
                 ))}

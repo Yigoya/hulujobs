@@ -12,8 +12,7 @@ import {
   Phone,
   Briefcase,
   TrendingUp,
-  Award,
-  Target
+  Award
 } from 'lucide-react';
 import { useCompany } from '../hooks/companies/useCompany';
 
@@ -218,11 +217,24 @@ const CompanyDetailPage: React.FC = () => {
           <div className="relative -mt-32 pb-8">
             <div className="bg-white rounded-xl shadow-lg p-8">
               <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-                <img
-                  src={company.logo}
-                  alt={company.name}
-                  className="w-24 h-24 rounded-xl object-cover flex-shrink-0"
-                />
+                {company.logo ? (
+                  <img
+                    src={company.logo}
+                    alt={company.name}
+                    className="w-24 h-24 rounded-xl object-cover flex-shrink-0"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                ) : null}
+                <div 
+                  className="w-24 h-24 rounded-xl flex-shrink-0 bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-4xl font-bold"
+                  style={{ display: company.logo ? 'none' : 'flex' }}
+                >
+                  {company.name.charAt(0).toUpperCase()}
+                </div>
                 
                 <div className="flex-1">
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">

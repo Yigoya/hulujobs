@@ -3,7 +3,7 @@ import { Search, MapPin, Briefcase } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
-    <section className="relative min-h-[420px] md:min-h-[520px] flex items-center pb-20">
+    <section className="relative min-h-[280px] md:min-h-[347px] flex items-center pb-20">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -19,15 +19,15 @@ const Hero: React.FC = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="text-center">
           {/* Hero Text */}
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mt-12 mb-6">
             Welcome to{' '}
-            <span className="text-blue-300">Hulu Jobs</span>
+            <span className="text-[#2b78ac]">HuluMoya Jobs</span>
           </h1>
           <h2 className="text-xl md:text-2xl font-semibold text-gray-100 mb-4">
-            Quality Jobs, <span className="text-blue-300">On Demand</span>
+            The Right Talent, <span className="text-[#2b78ac]">Right Now.</span>
           </h2>
           <p className="text-lg text-gray-200 mb-12 max-w-2xl mx-auto">
-            Top-rated employers and job openings at your fingertips.
+            Connect with opportunities that match your skills.
           </p>
 
           {/* Search Bar */}
@@ -52,10 +52,18 @@ const Hero: React.FC = () => {
                 </div>
                 <select className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none bg-white">
                   <option value="">Select Location</option>
-                  <option value="kampala">Kampala</option>
-                  <option value="jinja">Jinja</option>
-                  <option value="mbarara">Mbarara</option>
-                  <option value="gulu">Gulu</option>
+                  <option value="addis-ababa">Addis Ababa</option>
+                  <option value="oromia">Oromia</option>
+                  <option value="amhara">Amhara</option>
+                  <option value="tigray">Tigray</option>
+                  <option value="somali">Somali</option>
+                  <option value="afar">Afar</option>
+                  <option value="benishangul-gumuz">Benishangul-Gumuz</option>
+                  <option value="gambela">Gambela</option>
+                  <option value="harari">Harari</option>
+                  <option value="sidama">Sidama</option>
+                  <option value="snnpr">SNNPR</option>
+                  <option value="dire-dawa">Dire Dawa</option>
                 </select>
               </div>
 

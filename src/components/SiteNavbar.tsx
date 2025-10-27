@@ -1,33 +1,49 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Download, LogIn } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { usePreloadExternalSite } from '../hooks/usePreloadExternalSite';
 import logo from '../assets/logo.png';
 
 const SiteNavbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Preload external site when on root page
+  const isRootPage = location.pathname === '/';
+  if (isRootPage) {
+    usePreloadExternalSite('http://hulumoya.com');
+  }
+  
+  const handleLogoClick = () => {
+    if (isRootPage) {
+      window.location.href = 'http://hulumoya.com';
+    } else {
+      navigate('/');
+    }
+  };
 
   return (
     <nav className="bg-[#2b78ac] fixed top-0 w-full z-50 text-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
-            <button onClick={() => navigate('/')} className="flex items-center">
-              <img src={logo} alt="Hulu Jobs" className="h-10 w-auto object-cover mr-3" />
+            <button onClick={handleLogoClick} className="flex items-center">
+              <img src={logo} alt="HuluMoya Jobs" className="h-10 w-auto object-cover mr-3" />
             </button>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/jobs" className="px-3 py-2 text-sm">Jobs</Link>
-            <Link to="/companies" className="px-3 py-2 text-sm">Companies</Link>
-            <Link to="/contact" className="px-3 py-2 text-sm">Contact</Link>
-            <Link to="/post-job" className="px-3 py-2 text-sm">Post A Job</Link>
+            <Link to="/jobs" className="px-3 py-2 text-base font-medium">Jobs</Link>
+            <Link to="/companies" className="px-3 py-2 text-base font-medium">Companies</Link>
+            <Link to="/contact" className="px-3 py-2 text-base font-medium">Contact</Link>
+            <Link to="/post-job" className="px-3 py-2 text-base font-medium">Post A Job</Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-3">
-            <button className="flex items-center px-3 py-2 text-sm"><Download className="h-4 w-4 mr-1"/>Get App</button>
+            <button className="flex items-center px-3 py-2 text-base font-medium"><Download className="h-4 w-4 mr-1" />Get App</button>
             {user ? (
               <div className="flex items-center space-x-2">
                 <button onClick={() => navigate('/profile')} className="flex items-center space-x-2">
@@ -38,8 +54,8 @@ const SiteNavbar: React.FC = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                <Link to="/login" className="flex items-center px-3 py-2 text-sm"><LogIn className="h-4 w-4 mr-1"/>Login</Link>
-                <Link to="/signup" className="bg-gradient-to-r from-[#3385bb] to-[#2a6c99] text-white px-4 py-2 rounded-full text-sm">Register</Link>
+                <Link to="/login" className="flex items-center px-3 py-2 text-base font-medium"><LogIn className="h-4 w-4 mr-1" />Login</Link>
+                <Link to="/signup" className="bg-gradient-to-r from-[#3385bb] to-[#2a6c99] text-white px-4 py-2 rounded-full text-base font-medium">Register</Link>
               </div>
             )}
           </div>

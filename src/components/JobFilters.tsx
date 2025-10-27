@@ -68,26 +68,22 @@ const JobFilters: React.FC<JobFiltersProps> = ({ filters = {}, onChange }) => {
   ];
 
   const locations = [
-    'Kampala, Ethiopia',
-    'Entebbe, Ethiopia',
-    'Jinja, Ethiopia',
-    'Mbarara, Ethiopia',
-    'Gulu, Ethiopia',
-    'Mbale, Ethiopia',
-    'Fort Portal, Ethiopia',
-    'Masaka, Ethiopia',
-    'Lira, Ethiopia',
-    'Arua, Ethiopia',
-    'Soroti, Ethiopia',
-    'Kabale, Ethiopia',
-    'Hoima, Ethiopia',
-    'Kasese, Ethiopia',
-    'Mityana, Ethiopia',
+    'Addis Ababa',
+    'Oromia',
+    'Amhara',
+    'Tigray',
+    'Somali',
+    'Afar',
+    'Benishangul-Gumuz',
+    'Gambela',
+    'Harari',
+    'Sidama',
+    'SNNPR',
+    'Dire Dawa',
     'Remote',
     'Nairobi, Kenya',
     'Dar es Salaam, Tanzania',
-    'Kigali, Rwanda',
-    'Addis Ababa, Ethiopia'
+    'Kigali, Rwanda'
   ];
 
   const careerLevels = [

@@ -21,7 +21,6 @@ import {
   ChevronUp,
   Award,
   Briefcase,
-  Eye,
   MessageSquare
 } from 'lucide-react';
 
@@ -33,25 +32,25 @@ const PostJobPage: React.FC = () => {
       icon: Clock,
       title: 'Post Jobs in Minutes',
       description: 'Simple tools to create job listings with maximum reach across all industries.',
-      color: 'bg-blue-100 text-blue-600'
+      color: 'bg-blue-50 text-[#2b78ac]'
     },
     {
       icon: Users,
       title: 'Manage Applicants Easily',
       description: 'View, track, and shortlist applicants from your comprehensive dashboard.',
-      color: 'bg-green-100 text-green-600'
+      color: 'bg-blue-50 text-[#2b78ac]'
     },
     {
       icon: Search,
       title: 'Search & Invite Talent',
       description: 'Access a growing database of active job seekers and invite them directly.',
-      color: 'bg-purple-100 text-purple-600'
+      color: 'bg-blue-50 text-[#2b78ac]'
     },
     {
       icon: TrendingUp,
       title: 'Promote Jobs & Brand',
       description: 'Highlight your employer brand to attract top-tier professionals.',
-      color: 'bg-orange-100 text-orange-600'
+      color: 'bg-blue-50 text-[#2b78ac]'
     }
   ];
 
@@ -256,7 +255,7 @@ const PostJobPage: React.FC = () => {
                 Reach qualified candidates across all industries with powerful tools tailored for modern hiring teams.
               </p>
               <Link
-                to="/subscription-plans"
+                to="/login"
                 className="inline-flex items-center space-x-2 bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-50 transition-colors font-semibold text-lg group"
               >
                 <span>View Subscription Plans</span>
@@ -341,8 +340,8 @@ const PostJobPage: React.FC = () => {
                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 p-6 border border-gray-100"
               >
                 <div className="flex items-start space-x-4">
-                  <div className="bg-green-100 p-3 rounded-lg flex-shrink-0">
-                    <advantage.icon className="w-6 h-6 text-green-600" />
+                  <div className="bg-blue-50 p-3 rounded-lg flex-shrink-0">
+                    <advantage.icon className="w-6 h-6 text-[#2b78ac]" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -447,15 +446,16 @@ const PostJobPage: React.FC = () => {
                   ))}
                 </ul>
 
-                <button
-                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
+                <Link
+                  to="/login"
+                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors block text-center ${
                     plan.popular
                       ? 'bg-blue-600 text-white hover:bg-blue-700'
                       : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   }`}
                 >
                   {plan.cta}
-                </button>
+                </Link>
               </div>
             ))}
           </div>
