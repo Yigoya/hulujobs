@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 
-export const usePreloadExternalSite = (url: string) => {
+export const usePreloadExternalSite = (url: string | null) => {
   useEffect(() => {
+    if (!url) return;
+    
     // Create a hidden iframe to preload the site
     const iframe = document.createElement('iframe');
     iframe.style.display = 'none';

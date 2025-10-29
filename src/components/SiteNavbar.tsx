@@ -13,9 +13,7 @@ const SiteNavbar: React.FC = () => {
   
   // Preload external site when on root page
   const isRootPage = location.pathname === '/';
-  if (isRootPage) {
-    usePreloadExternalSite('http://hulumoya.com');
-  }
+  usePreloadExternalSite(isRootPage ? 'http://hulumoya.com' : null);
   
   const handleLogoClick = () => {
     if (isRootPage) {
